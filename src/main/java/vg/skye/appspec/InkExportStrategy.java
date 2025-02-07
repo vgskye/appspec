@@ -1,0 +1,72 @@
+package vg.skye.appspec;
+
+import appeng.api.behaviors.StackExportStrategy;
+import appeng.api.behaviors.StackTransferContext;
+import appeng.api.config.Actionable;
+import appeng.api.stacks.AEKey;
+import appeng.api.storage.StorageHelper;
+import de.dafuqs.spectrum.api.energy.InkStorageBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+
+public class InkExportStrategy implements StackExportStrategy {
+    private final ServerLevel level;
+    private final BlockPos fromPos;
+    private final Direction fromSide;
+
+    public InkExportStrategy(ServerLevel level,
+                             BlockPos fromPos,
+                             Direction fromSide) {
+        this.level = level;
+        this.fromPos = fromPos;
+        this.fromSide = fromSide;
+    }
+
+    @Override
+    public long transfer(StackTransferContext context, AEKey what, long maxAmount) {
+        if (!(what instanceof InkKey))
+            return 0;
+
+        var be = level.getBlockEntity(fromPos);
+        if (!(be instanceof InkStorageBlockEntity<?>))
+            return 0;
+        var storage = ((InkStorageBlockEntity<?>) be).getEnergyStorage();
+
+        var capacity = storage.getRoom(((InkKey) what).getColor());
+        var insertable = Math.min(maxAmount, capacity);
+        var extracted = StorageHelper.poweredExtraction(context.getEnergySource(),
+                context.getInternalStorage().getInventory(), what, insertable, context.getActionSource(),
+                Actionable.MODULATE);
+        if (extracted > 0) {
+            var inserted = storage.addEnergy(((InkKey) what).getColor(), extracted);
+            if (extracted != inserted) {
+                AppliedSpectrometry.LOGGER.error("Overextracted ink? (Extracted {}, inserted {})", extracted, inserted);
+            }
+            ((InkStorageBlockEntity<?>) be).setInkDirty();
+            be.setChanged();
+        }
+        return extracted;
+    }
+
+    @Override
+    public long push(AEKey what, long maxAmount, Actionable mode) {
+        if (!(what instanceof InkKey))
+            return 0;
+
+        var be = level.getBlockEntity(fromPos);
+        if (!(be instanceof InkStorageBlockEntity<?>))
+            return 0;
+        var storage = ((InkStorageBlockEntity<?>) be).getEnergyStorage();
+
+        if (mode == Actionable.SIMULATE) {
+            var capacity = storage.getRoom(((InkKey) what).getColor());
+            return Math.min(maxAmount, capacity);
+        }
+
+        var inserted = storage.addEnergy(((InkKey) what).getColor(), maxAmount);
+        ((InkStorageBlockEntity<?>) be).setInkDirty();
+        be.setChanged();
+        return inserted;
+    }
+}

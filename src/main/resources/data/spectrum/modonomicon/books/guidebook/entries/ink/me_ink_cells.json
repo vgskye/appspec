@@ -1,0 +1,33 @@
+{
+  "name": "recipeGroup.spectrum.ink_cells",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "appspec:unlocks/items/ink_cells"
+  },
+  "icon": "appspec:ink_storage_cell_256k",
+  "category": "spectrum:ink",
+  "hide_while_locked": true,
+  "parents": [
+    {
+      "entry": "spectrum:ink/color_picker",
+      "line_reversed": true
+    }
+  ],
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "x": 6,
+  "y": 2,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "text": "book.appspec.ink_cells.page0.text",
+      "title": "recipeGroup.spectrum.ink_cells"
+    },
+    {
+      "type": "spectrum:pedestal_crafting",
+      "title": "container.spectrum.rei.pedestal_recipe",
+      "recipe_id": "appspec:ink_cell_housing",
+      "text": "book.appspec.ink_cells.page1.text"
+    }
+  ]
+}

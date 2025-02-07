@@ -1,0 +1,28 @@
+{
+  "criteria": {
+    "built_complex_structure": {
+      "trigger": "revelationary:advancement_gotten",
+      "conditions": {
+        "advancement_identifier": "spectrum:lategame/build_complex_pedestal_structure"
+      }
+    },
+    "collected_hummingstone": {
+      "trigger": "revelationary:advancement_gotten",
+      "conditions": {
+        "advancement_identifier": "spectrum:lategame/collect_hummingstone"
+      }
+    },
+    "collected_storm_stone": {
+      "trigger": "revelationary:advancement_gotten",
+      "conditions": {
+        "advancement_identifier": "spectrum:midgame/collect_storm_stone"
+      }
+    },
+    "created_refined_azurite": {
+      "trigger": "revelationary:advancement_gotten",
+      "conditions": {
+        "advancement_identifier": "spectrum:midgame/create_refined_azurite"
+      }
+    }
+  }
+}

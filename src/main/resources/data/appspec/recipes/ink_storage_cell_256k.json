@@ -1,0 +1,37 @@
+{
+  "type": "spectrum:pedestal",
+  "group": "ink_cells",
+  "time": 1200,
+  "tier": "complex",
+  "cyan": 4,
+  "magenta": 0,
+  "yellow": 4,
+  "black": 4,
+  "white": 0,
+  "experience": 0.0,
+  "pattern": [
+    "GSG",
+    "SCS",
+    "AAA"
+  ],
+  "key": {
+    "G": {
+      "item": "spectrum:hummingstone_glass"
+    },
+    "S": {
+      "item": "spectrum:storm_stone"
+    },
+    "A": {
+      "item": "spectrum:refined_azurite"
+    },
+    "C": {
+      "item": "ae2:cell_component_256k"
+    }
+  },
+  "result": {
+    "item": "appspec:ink_storage_cell_256k",
+    "count": 1
+  },
+  "disable_yield_upgrades": true,
+  "required_advancement": "appspec:unlocks/items/ink_cells"
+}

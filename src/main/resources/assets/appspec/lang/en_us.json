@@ -1,0 +1,24 @@
+{
+  "gui.appspec.ink": "Ink",
+
+  "itemGroup.appspec.tab": "Applied Spectrometry",
+
+  "item.appspec.ink_cell_housing": "ME Ink Cell Housing",
+
+  "item.appspec.ink_storage_cell_1k": "1k ME Ink Storage Cell",
+  "item.appspec.ink_storage_cell_4k": "4k ME Ink Storage Cell",
+  "item.appspec.ink_storage_cell_16k": "16k ME Ink Storage Cell",
+  "item.appspec.ink_storage_cell_64k": "64k ME Ink Storage Cell",
+  "item.appspec.ink_storage_cell_256k": "256k ME Ink Storage Cell",
+
+  "item.appspec.portable_ink_cell_1k": "1k Portable Ink Cell",
+  "item.appspec.portable_ink_cell_4k": "4k Portable Ink Cell",
+  "item.appspec.portable_ink_cell_16k": "16k Portable Ink Cell",
+  "item.appspec.portable_ink_cell_64k": "64k Portable Ink Cell",
+  "item.appspec.portable_ink_cell_256k": "256k Portable Ink Cell",
+
+  "recipeGroup.spectrum.ink_cells": "ME Ink Cells",
+
+  "book.appspec.ink_cells.page0.text": "It seems Applied Energistics can transfer and store [Ink](entry://ink/ink) much more effectively, directly moving it instead of having it flow by itself.",
+  "book.appspec.ink_cells.page1.text": "ME Ink Cells allow me to store vast quantities of [Ink](entry://ink/ink)."
+}

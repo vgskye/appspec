@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "appspec",
+	"version": "${version}",
+	"name": "Applied Spectrometry",
+	"description": "Move Ink with AE2. Because fuck balance.",
+	"authors": [
+		"Skye"
+	],
+	"contact": {
+		"sources": "https://github.com/vgskye/appspec"
+	},
+	"license": "MIT",
+	"icon": "assets/appspec/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"vg.skye.appspec.client.AppliedSpectrometryClient"
+		],
+		"ae2": [
+			"vg.skye.appspec.AppliedSpectrometry::ae2Initialize"
+		],
+		"ae2:client": [
+			"vg.skye.appspec.client.AppliedSpectrometryClient::ae2Initialize"
+		]
+	},
+	"mixins": [
+		"appspec.mixins.json"
+	],
+	"depends": {
+		"fabricloader": "*",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"ae2": ">=15.2.12",
+		"spectrum": "~1.8.4"
+	}
+}
