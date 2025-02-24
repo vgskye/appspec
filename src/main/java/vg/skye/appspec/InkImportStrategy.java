@@ -37,7 +37,7 @@ public class InkImportStrategy implements StackImportStrategy {
         var storage = ((InkStorageBlockEntity<?>) be).getEnergyStorage();
         for (InkColor inkColor : storage.getEnergy().keySet()) {
             var key = new InkKey(inkColor);
-            if (context.isInFilter(key) == context.isInverted()) {
+            if (context.isInFilter(key) != context.isInverted()) {
                 var extracted = storage.drainEnergy(inkColor, maxTransfer);
                 var inserted = context.getInternalStorage().getInventory().insert(key, extracted, Actionable.MODULATE, context.getActionSource());
                 var toRefund = extracted - inserted;
