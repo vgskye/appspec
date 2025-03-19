@@ -1,0 +1,24 @@
+{
+  "gui.appspec.ink": "Краска",
+
+  "itemGroup.appspec.tab": "Applied Spectrometry",
+
+  "item.appspec.ink_cell_housing": "МЭ корпус для ячейки с краской",
+
+  "item.appspec.ink_storage_cell_1k": "1К МЭ ячейка хранения краски",
+  "item.appspec.ink_storage_cell_4k": "4К МЭ ячейка хранения краски",
+  "item.appspec.ink_storage_cell_16k": "16К МЭ ячейка хранения краски",
+  "item.appspec.ink_storage_cell_64k": "64К МЭ ячейка хранения краски",
+  "item.appspec.ink_storage_cell_256k": "256К МЭ ячейка хранения краски",
+
+  "item.appspec.portable_ink_cell_1k": "1К Переносная ячейка для краски",
+  "item.appspec.portable_ink_cell_4k": "4К Переносная ячейка для краски",
+  "item.appspec.portable_ink_cell_16k": "16К Переносная ячейка для краски",
+  "item.appspec.portable_ink_cell_64k": "64К Переносная ячейка для краски",
+  "item.appspec.portable_ink_cell_256k": "256К Переносная ячейка для краски",
+
+  "recipeGroup.spectrum.ink_cells": "МЭ ячейки для краски",
+
+  "book.appspec.ink_cells.page0.text": "Кажется, Applied Energistics может переносить и накапливать [краску](entry://ink/ink) гораздо эффективнее, двигая её напрямую вместо того, чтобы она стекала сама по себе.",
+  "book.appspec.ink_cells.page1.text": "ME ячейки хранения краски позволяют хранить огромное количество [краски](entry://ink/ink)."
+}
