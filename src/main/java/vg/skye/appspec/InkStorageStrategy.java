@@ -52,7 +52,8 @@ public class InkStorageStrategy implements ExternalStorageStrategy {
             if (mode == Actionable.SIMULATE) {
                 return Math.min(amount, storage.getEnergyStorage().getRoom(color));
             }
-            var inserted = storage.getEnergyStorage().addEnergy(color, amount);
+            var overflow = storage.getEnergyStorage().addEnergy(color, amount);
+            var inserted = amount - overflow;
             if (inserted > 0) {
                 storage.setInkDirty();
                 ((BlockEntity) storage).setChanged();

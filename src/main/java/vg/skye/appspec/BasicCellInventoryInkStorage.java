@@ -31,7 +31,8 @@ public class BasicCellInventoryInkStorage implements InkStorage {
 
     @Override
     public long addEnergy(InkColor color, long amount) {
-        return inventory.insert(new InkKey(color), amount, Actionable.MODULATE, IActionSource.empty());
+        var inserted = inventory.insert(new InkKey(color), amount, Actionable.MODULATE, IActionSource.empty());
+        return amount - inserted;
     }
 
     @Override

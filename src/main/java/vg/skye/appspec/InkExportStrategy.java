@@ -36,19 +36,23 @@ public class InkExportStrategy implements StackExportStrategy {
         if (!storage.accepts(color))
             return 0;
 
-        var capacity = storage.getRoom(color);
-        var insertable = Math.min(maxAmount, capacity);
+        var remainingCapacity = storage.getRoom(color);
+        var insertable = Math.min(maxAmount, remainingCapacity);
         var extracted = StorageHelper.poweredExtraction(context.getEnergySource(),
                 context.getInternalStorage().getInventory(), what, insertable, context.getActionSource(),
                 Actionable.MODULATE);
-        if (extracted > 0) {
-            var inserted = storage.addEnergy(color, extracted);
-            if (extracted != inserted) {
-                AppliedSpectrometry.LOGGER.error("Overextracted ink? (Extracted {}, inserted {})", extracted, inserted);
-            }
-            ((InkStorageBlockEntity<?>) be).setInkDirty();
-            be.setChanged();
+
+        if (extracted == 0) {
+            return 0;
         }
+
+        var overflow = InkWorkaround.addEnergyBugfix(storage, color, extracted);
+        var inserted = extracted - overflow;
+        if (extracted != inserted) {
+            AppliedSpectrometry.LOGGER.error("Ink over-extracted despite checking capacity? (Extracted {}, inserted {})", extracted, inserted);
+        }
+        ((InkStorageBlockEntity<?>) be).setInkDirty();
+        be.setChanged();
         return extracted;
     }
 
@@ -70,7 +74,8 @@ public class InkExportStrategy implements StackExportStrategy {
             return Math.min(maxAmount, capacity);
         }
 
-        var inserted = storage.addEnergy(color, maxAmount);
+        var overflow = InkWorkaround.addEnergyBugfix(storage, color, maxAmount);
+        var inserted = maxAmount - overflow;
         ((InkStorageBlockEntity<?>) be).setInkDirty();
         be.setChanged();
         return inserted;
