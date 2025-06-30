@@ -15,12 +15,13 @@ public class InkItemStrategy implements ContainerItemStrategy<InkKey, ItemStack>
         if (stack.isEmpty()) {
             return null;
         }
-        if (stack.getItem() instanceof InkStorageItem<?> item) {
-            var colors = item.getEnergyStorage(stack).getEnergy();
-            for (var entry : colors.entrySet()) {
-                if (entry.getValue() != 0) {
-                    return new GenericStack(new InkKey(entry.getKey()), entry.getValue());
-                }
+        if (!(stack.getItem() instanceof InkStorageItem<?> item)) {
+            return null;
+        }
+        var colors = item.getEnergyStorage(stack).getEnergy();
+        for (var entry : colors.entrySet()) {
+            if (entry.getValue() != 0) {
+                return new GenericStack(new InkKey(entry.getKey()), entry.getValue());
             }
         }
         return null;
@@ -32,10 +33,10 @@ public class InkItemStrategy implements ContainerItemStrategy<InkKey, ItemStack>
         if (stack.isEmpty() || stack.getCount() != 1) {
             return null;
         }
-        if (stack.getItem() instanceof InkStorageItem<?>) {
-            return stack;
+        if (!(stack.getItem() instanceof InkStorageItem<?>)) {
+            return null;
         }
-        return null;
+        return stack;
     }
 
     @Override
@@ -44,10 +45,10 @@ public class InkItemStrategy implements ContainerItemStrategy<InkKey, ItemStack>
         if (stack.isEmpty() || stack.getCount() != 1) {
             return null;
         }
-        if (stack.getItem() instanceof InkStorageItem<?>) {
-            return stack;
+        if (!(stack.getItem() instanceof InkStorageItem<?>)) {
+            return null;
         }
-        return null;
+        return stack;
     }
 
     @Override
@@ -55,16 +56,16 @@ public class InkItemStrategy implements ContainerItemStrategy<InkKey, ItemStack>
         if (context.isEmpty() || context.getCount() != 1) {
             return 0;
         }
-        if (context.getItem() instanceof InkStorageItem<?> item) {
-            var colors = item.getEnergyStorage(context);
-            if (mode == Actionable.SIMULATE) {
-                return Math.min(colors.getEnergy(what.getColor()), amount);
-            }
-            var drained = colors.drainEnergy(what.getColor(), amount);
-            item.setEnergyStorage(context, colors);
-            return drained;
+        if (!(context.getItem() instanceof InkStorageItem<?> item)) {
+            return 0;
         }
-        return 0;
+        var colors = item.getEnergyStorage(context);
+        if (mode == Actionable.SIMULATE) {
+            return Math.min(colors.getEnergy(what.getColor()), amount);
+        }
+        var drained = colors.drainEnergy(what.getColor(), amount);
+        item.setEnergyStorage(context, colors);
+        return drained;
     }
 
     @Override
@@ -72,16 +73,16 @@ public class InkItemStrategy implements ContainerItemStrategy<InkKey, ItemStack>
         if (context.isEmpty() || context.getCount() != 1) {
             return 0;
         }
-        if (context.getItem() instanceof InkStorageItem<?> item) {
-            var colors = item.getEnergyStorage(context);
-            if (mode == Actionable.SIMULATE) {
-                return Math.min(colors.getRoom(what.getColor()), amount);
-            }
-            var inserted = colors.addEnergy(what.getColor(), amount);
-            item.setEnergyStorage(context, colors);
-            return inserted;
+        if (!(context.getItem() instanceof InkStorageItem<?> item)) {
+            return 0;
         }
-        return 0;
+        var colors = item.getEnergyStorage(context);
+        if (mode == Actionable.SIMULATE) {
+            return Math.min(colors.getRoom(what.getColor()), amount);
+        }
+        var overflow = InkWorkaround.addEnergyBugfix(colors, what.getColor(), amount);
+        item.setEnergyStorage(context, colors);
+        return amount - overflow;
     }
 
     @Override
