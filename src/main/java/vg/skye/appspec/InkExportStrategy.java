@@ -32,20 +32,27 @@ public class InkExportStrategy implements StackExportStrategy {
         if (!(be instanceof InkStorageBlockEntity<?>))
             return 0;
         var storage = ((InkStorageBlockEntity<?>) be).getEnergyStorage();
+        var color = ((InkKey) what).getColor();
+        if (!storage.accepts(color))
+            return 0;
 
-        var capacity = storage.getRoom(((InkKey) what).getColor());
-        var insertable = Math.min(maxAmount, capacity);
+        var remainingCapacity = storage.getRoom(color);
+        var insertable = Math.min(maxAmount, remainingCapacity);
         var extracted = StorageHelper.poweredExtraction(context.getEnergySource(),
                 context.getInternalStorage().getInventory(), what, insertable, context.getActionSource(),
                 Actionable.MODULATE);
-        if (extracted > 0) {
-            var inserted = storage.addEnergy(((InkKey) what).getColor(), extracted);
-            if (extracted != inserted) {
-                AppliedSpectrometry.LOGGER.error("Overextracted ink? (Extracted {}, inserted {})", extracted, inserted);
-            }
-            ((InkStorageBlockEntity<?>) be).setInkDirty();
-            be.setChanged();
+
+        if (extracted == 0) {
+            return 0;
         }
+
+        var overflow = InkWorkaround.addEnergyBugfix(storage, color, extracted);
+        var inserted = extracted - overflow;
+        if (extracted != inserted) {
+            AppliedSpectrometry.LOGGER.error("Ink over-extracted despite checking capacity? (Extracted {}, inserted {})", extracted, inserted);
+        }
+        ((InkStorageBlockEntity<?>) be).setInkDirty();
+        be.setChanged();
         return extracted;
     }
 
@@ -58,13 +65,17 @@ public class InkExportStrategy implements StackExportStrategy {
         if (!(be instanceof InkStorageBlockEntity<?>))
             return 0;
         var storage = ((InkStorageBlockEntity<?>) be).getEnergyStorage();
+        var color = ((InkKey) what).getColor();
+        if (!storage.accepts(color))
+            return 0;
 
         if (mode == Actionable.SIMULATE) {
-            var capacity = storage.getRoom(((InkKey) what).getColor());
+            var capacity = storage.getRoom(color);
             return Math.min(maxAmount, capacity);
         }
 
-        var inserted = storage.addEnergy(((InkKey) what).getColor(), maxAmount);
+        var overflow = InkWorkaround.addEnergyBugfix(storage, color, maxAmount);
+        var inserted = maxAmount - overflow;
         ((InkStorageBlockEntity<?>) be).setInkDirty();
         be.setChanged();
         return inserted;

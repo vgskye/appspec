@@ -46,10 +46,14 @@ public class InkStorageStrategy implements ExternalStorageStrategy {
         public long insert(AEKey what, long amount, Actionable mode, IActionSource source) {
             if (!(what instanceof InkKey))
                 return 0;
+            var color = ((InkKey) what).getColor();
+            if (!storage.getEnergyStorage().accepts(color))
+                return 0;
             if (mode == Actionable.SIMULATE) {
-                return Math.min(amount, storage.getEnergyStorage().getRoom(((InkKey) what).getColor()));
+                return Math.min(amount, storage.getEnergyStorage().getRoom(color));
             }
-            var inserted = storage.getEnergyStorage().addEnergy(((InkKey) what).getColor(), amount);
+            var overflow = storage.getEnergyStorage().addEnergy(color, amount);
+            var inserted = amount - overflow;
             if (inserted > 0) {
                 storage.setInkDirty();
                 ((BlockEntity) storage).setChanged();

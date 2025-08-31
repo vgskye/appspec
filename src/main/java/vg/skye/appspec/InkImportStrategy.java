@@ -37,17 +37,19 @@ public class InkImportStrategy implements StackImportStrategy {
         var storage = ((InkStorageBlockEntity<?>) be).getEnergyStorage();
         for (InkColor inkColor : storage.getEnergy().keySet()) {
             var key = new InkKey(inkColor);
-            if (context.isInFilter(key) != context.isInverted()) {
-                var extracted = storage.drainEnergy(inkColor, maxTransfer);
-                var inserted = context.getInternalStorage().getInventory().insert(key, extracted, Actionable.MODULATE, context.getActionSource());
-                var toRefund = extracted - inserted;
-                var refunded = storage.addEnergy(inkColor, toRefund);
-                if (refunded != toRefund) {
-                    AppliedSpectrometry.LOGGER.error("Failed to correctly refund overextracted ink? (Wanted to refund {}, refunded {})", toRefund, refunded);
-                }
-                maxTransfer -= inserted;
-                transferred += inserted;
+            if (context.isInFilter(key) == context.isInverted()) {
+                continue;
             }
+
+            var extracted = storage.drainEnergy(inkColor, maxTransfer);
+            var inserted = context.getInternalStorage().getInventory().insert(key, extracted, Actionable.MODULATE, context.getActionSource());
+            var toRefund = extracted - inserted;
+            var refunded = toRefund - InkWorkaround.addEnergyBugfix(storage, inkColor, toRefund);
+            if (refunded != toRefund) {
+                AppliedSpectrometry.LOGGER.error("Failed to correctly refund over-extracted ink? (Wanted to refund {}, refunded {})", toRefund, refunded);
+            }
+            maxTransfer -= inserted;
+            transferred += inserted;
         }
         ((InkStorageBlockEntity<?>) be).setInkDirty();
         be.setChanged();
