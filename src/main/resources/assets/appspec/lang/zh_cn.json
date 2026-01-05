@@ -1,0 +1,24 @@
+{
+  "gui.appspec.ink": "墨水",
+
+  "itemGroup.appspec.tab": "应用光谱学",
+
+  "item.appspec.ink_cell_housing": "ME墨水元件外壳",
+
+  "item.appspec.ink_storage_cell_1k": "1k ME墨水储存元件",
+  "item.appspec.ink_storage_cell_4k": "4k ME墨水储存元件",
+  "item.appspec.ink_storage_cell_16k": "16k ME墨水储存元件",
+  "item.appspec.ink_storage_cell_64k": "64k ME墨水储存元件",
+  "item.appspec.ink_storage_cell_256k": "256k ME墨水储存元件",
+
+  "item.appspec.portable_ink_cell_1k": "1k便携墨水元件",
+  "item.appspec.portable_ink_cell_4k": "4k便携墨水元件",
+  "item.appspec.portable_ink_cell_16k": "16k便携墨水元件",
+  "item.appspec.portable_ink_cell_64k": "64k便携墨水元件",
+  "item.appspec.portable_ink_cell_256k": "256k便携墨水元件",
+
+  "recipeGroup.spectrum.ink_cells": "ME墨水元件",
+
+  "book.appspec.ink_cells.page0.text": "似乎让应用能源来传输并储存[墨水](entry://ink/ink)会更有效，直接传输它，而不是让它自己流动。",
+  "book.appspec.ink_cells.page1.text": "ME墨水单元允许我储存大量的[墨水](entry://ink/ink)。"
+}
